@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>SecTools.tw 刮刮樂</title>
+        <style>
+            canvas{
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+            #reset_div{
+                position: absolute;
+                left: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <canvas id="bg-canvas" class="canvas" width="900" height="760" style="width: 450px; height: 380px;"></canvas>
+            <canvas id="fg-canvas" class="canvas" width="900" height="760" style="width: 450px; height: 380px;"></canvas>
+        </div>
+        <div id="reset_div">
+            <button type="button" id="reset">再刮一張</button>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script>
+            function initialBgCanvas(gift_text){
+                const canvas = document.getElementById("bg-canvas");
+                const context = canvas.getContext('2d');
+                context.font = '30px Microsoft JhengHei, PMingLiU, sans-serif';
+                context.fillText(gift_text, 100, 180);
+            }
+            function initialFgCanvas() {
+                const canvas = document.getElementById("fg-canvas");
+                const context = canvas.getContext('2d');
+                context.fillStyle = 'silver';
+                context.fillRect(0, 0, 450, 380);
+                context.globalCompositeOperation = 'destination-out';
+            }
+            function handleMousemove() {
+                const canvas = document.getElementById("fg-canvas");
+                const context = canvas.getContext('2d')
+                const x = event.offsetX
+                const y = event.offsetY
+                context.beginPath()
+                context.arc(x, y, 20, 0, Math.PI * 2)
+                context.fill()
+            }
+            $(document).ready(function(){
+                $.ajax({
+                    url: "/renew",
+                    method: "GET",
+                    dataType: "plain/text",
+                    data:"",
+                    error:function(err){
+                        initialBgCanvas(err.responseText)
+                        initialFgCanvas()
+                    },
+                  });
+                $(document).mousemove(function(e){
+                    const x = e.offsetX
+                    const y = e.offsetY
+                    if((x>0 && x<900) && (y>0 && y<760)){
+                        handleMousemove()
+                    }
+                });
+                $("#reset").click(function(){
+                    window.location.reload();
+                });
+              });
+        </script>
+    </body>
+</html>
