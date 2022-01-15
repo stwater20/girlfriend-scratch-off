@@ -37,4 +37,6 @@ def renew():
     randnum = random.randint(0,len(gifts))
     response = make_response(gifts[randnum],200)
     return response
-    
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3000)
