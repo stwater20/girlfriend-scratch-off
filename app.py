@@ -5,6 +5,14 @@ app = Flask(__name__)
 
 data=[
     {
+        'item':"親一下",
+        'count':10
+    },
+    {
+        'item':"搔癢 10 秒",
+        'count':10
+    },
+    {
         'item':"抱抱 10 秒",
         'count':10
     },
@@ -18,7 +26,7 @@ data=[
     },
     {
         'item':"巧克力 1 盒",
-        'count':10
+        'count':1
     }
 ]
 
@@ -39,4 +47,4 @@ def renew():
     return response
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=5000)
